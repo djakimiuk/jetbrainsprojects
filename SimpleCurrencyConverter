@@ -1,0 +1,106 @@
+const input = require('sync-input');
+const currencyArr = ["JPY", "EUR", "RUB", "USD", "GBP"];
+const USD = {
+    USD: 1,
+    JPY: 113.5,
+    EUR: 0.89,
+    RUB: 74.36,
+    GBP: 0.75
+};
+
+
+console.log(`Welcome to Currency Converter!
+1 USD equals 1 USD
+1 USD equals 113.5 JPY
+1 USD equals 0.89 EUR
+1 USD equals 74.36 RUB
+1 USD equals 0.75 GBP
+What do you want to do?
+1-Convert currencies 2-Exit program
+`);
+
+let startChoise = Number(input());
+let startChoiseRep;
+    if (startChoise === 1) {
+        console.log("What do you want to convert?");
+    } else if (startChoise === 2) {
+        return console.log("Have a nice day!");
+    } else {
+        while (true) {
+           startChoiseRep = Number(input(`
+Unknown input
+What do you want to do?
+1-Convert currencies 2-Exit program
+`));
+            if (startChoiseRep === 1 || startChoiseRep === 2) {
+                break;
+            }
+        }
+        if (startChoiseRep === 1) {
+            console.log("What do you want to convert?");
+        } else if (startChoiseRep === 2) {
+            return console.log("Have a nice day!");
+        }
+    }
+
+    let currencyFrom = input("From: ").toUpperCase();
+    let currencyFromRep;
+
+    if (!currencyArr.includes(currencyFrom)) {
+        while (true) {
+            console.log("Unknown currency");
+            console.log("What do you want to convert?");
+            currencyFromRep = input("From: ").toUpperCase();
+            if(currencyArr.includes(currencyFromRep)) {
+                currencyFrom = currencyFromRep
+                break;
+            }
+        }
+    }
+
+    let currencyTo = input("To: ").toUpperCase();
+    let currencyToRep;
+
+    if (!currencyArr.includes(currencyTo)) {
+        while (true) {
+            console.log("Unknown currency");
+            currencyToRep = input("To: ").toUpperCase();
+            if(currencyArr.includes(currencyToRep)) {
+                currencyTo = currencyToRep
+                break;
+            }
+        }
+    }
+
+    let amount = input("Amount: ");
+    let amountRep;
+
+    const currencyFunc = function (currencyTo, amount) {
+        let result = (USD[currencyTo] / USD[currencyFrom] * amount).toFixed(4);
+        console.log(`Result: ${amount} ${currencyFrom} equals ${result} ${currencyTo}`);
+        return result;
+    };
+
+    if (amount < 1) {
+        while(true) {
+            console.log("The amount cannot be less than 1")
+            amountRep = input("Amount: ");
+            if(!(amountRep < 1)) {
+                amount = amountRep;
+                currencyFunc(currencyTo, amount);
+                break;
+            }
+        }
+    } else if (isNaN(amount)) {
+        while(true) {
+        console.log("The amount has to be a number");
+        amountRep = input("Amount: ");
+        if(!(isNaN(amountRep))) {
+                amount = amountRep;
+                currencyFunc(currencyTo, amount);
+                break;
+            }
+        }
+    } else {
+        return currencyFunc(currencyTo, amount);
+    }
